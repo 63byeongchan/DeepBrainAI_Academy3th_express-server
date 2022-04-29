@@ -92,9 +92,16 @@ export default function UserService() {
                     res.status(200).json(users)
                 }
             )
+        },
+        async updateUser(req, res) {
+            let newUser = req.body.params
+            let result = await User.update({ userid: newUser['userid'] }, { ...newUser });
+            res.status(200).json(result)
+        },
+        async delUser(req, res) {
+            const result = await User.deleteOne({ ...req.query })
+            res.status(200).json(result)
         }
-
-
 
     }
 }

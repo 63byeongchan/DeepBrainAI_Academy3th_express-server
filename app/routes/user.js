@@ -37,4 +37,13 @@ app.get('/getUsers', cors(corsOptions), (req, res) => {
     console.log(' ## getUsers ##')
     UserService().getUsers(req, res)
 })
+app.put('/', cors(corsOptions), (req, res) => {
+    console.log(' ## updateUser ##')
+    UserService().updateUser(req, res)
+})
+app.delete('/', cors(corsOptions), (req, res) => {
+    console.log(' ## delUser ##')
+    UserService().delUser(req, res)
+})
+
 export default app
