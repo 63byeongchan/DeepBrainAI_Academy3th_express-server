@@ -13,7 +13,7 @@ export default function RestaurantService() {
                         res.status(500).json({ message: err });
                         console.log("Get fail Restaurant list");
                     } else {
-                        res.status(200).json(restaurant);
+                        res.status(200).json(restaurants);
                     }
                 });
         },
