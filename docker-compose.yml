@@ -2,14 +2,15 @@ version: '3.9'
 
 services :
   mongodb:
+    build : ./db/mongo
     container_name: mern-mongodb
     image: mongo:latest 
     restart: unless-stopped
     command : mongod --oplogSize 512 --timeStampFormat iso8601-local --bind_ip_all --wiredTigerCacheSizeGB 64 
-    #environment :
+    environment :
       #MONGO_INITDB_ROOT_USERNAME: root
       #MONGO_INITDB_ROOT_PASSWORD: root
-      #MONGO_INITDB_DATABASE: mern  
+      MONGO_INITDB_DATABASE: mern  
     env_file: docker.env
     ports:
       - "27017:27017"
@@ -21,12 +22,30 @@ services :
       test: echo 'db.runCommand({serverStatus:1}).ok' | mongosh admin -u $MONGO_INITDB_ROOT_USERNAME -p $MONGO_INITDB_ROOT_PASSWORD --quiet | grep 1
       timeout: 5s
       retries: 5
+    networks:
+      - dev
     logging:
       driver: "json-file"
       options:
         max-size: "8m"
         max-file: "10"
 
+  mongo_seed:
+    container_name: mern_mongo_seed
+    build : ./db/mongo
+    depends_on:
+      - mongodb
+    networks:
+      - dev
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "8m"
+        max-file: "10"
+networks:
+  dev:
+    name: dev
+    driver: bridge
 #volumes:
 #  volume_container
 
